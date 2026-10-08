@@ -1,0 +1,22 @@
+name: Send Email
+on:
+  schedule:
+    - cron: '0 9 * * *'
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Send Email via SMTP
+        uses: dawiddr/action-send-mail@v3
+        with:
+          server_address: smtp-relay.brevo.com
+          server_port: 587
+          username: ${{ secrets.BREVO_SMTP_KEY }}
+          password: ${{ secrets.BREVO_SMTP_KEY }}
+          subject: Automated Email
+          body: This is an automated email from GitHub Actions!
+          to: howadafouad@gmail.com
+          from: howadafouad@gmail.com
