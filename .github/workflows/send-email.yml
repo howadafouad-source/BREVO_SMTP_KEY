@@ -1,20 +1,20 @@
 name: Send Email
+
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '0 7 * * *'   # 9:00 صباحاً بتوقيت ليبيا (7:00 UTC)
+  workflow_dispatch:       # زر تشغيل يدوي للتجربة من تبويب Actions
+
 jobs:
   send-email:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Send Email via SMTP
-        uses: dawiddr/action-send-mail@v3
+      - name: Send Email via Brevo SMTP
+        uses: dawidd6/action-send-mail@v22
         with:
           server_address: smtp-relay.brevo.com
           server_port: 587
-          username: ${{ secrets.BREVO_SMTP_KEY }}
+          username: ${{ secrets.BREVO_SMTP_LOGIN }}
           password: ${{ secrets.BREVO_SMTP_KEY }}
           subject: Automated Email
           body: This is an automated email from GitHub Actions!
