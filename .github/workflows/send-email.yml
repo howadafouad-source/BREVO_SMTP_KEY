@@ -9,14 +9,16 @@ jobs:
   send-email:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Email via Brevo SMTP
-        uses: dawidd6/action-send-mail@v22
-        with:
-          server_address: smtp-relay.brevo.com
-          server_port: 587
-          username: ${{ secrets.BREVO_SMTP_LOGIN }}
-          password: ${{ secrets.BREVO_SMTP_KEY }}
-          subject: Automated Email
-          body: This is an automated email from GitHub Actions!
-          to: howadafouad@gmail.com
-          from: howadafouad@gmail.com
+      - name: Send Email via Brevo API
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+        run: |
+          curl --fail-with-body -sS -X POST https://api.brevo.com/v3/smtp/email \
+            -H "api-key: $BREVO_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "sender": {"name": "HAWAA", "email": "howadafouad@gmail.com"},
+              "to": [{"email": "howadafouad@gmail.com"}],
+              "subject": "Automated Email",
+              "textContent": "This is an automated email from GitHub Actions!"
+            }'
